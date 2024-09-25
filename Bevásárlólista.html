@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <title>Bevásárlólista számlálóval</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li {
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        ul li button {
+            background-color: red;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        ul li button:hover {
+            background-color: darkred;
+        }
+        .counter {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Bevásárlólista</h1>
+    <input type="text" id="itemInput" placeholder="Adj hozzá egy elemet...">
+    <button onclick="addItem()">Hozzáadás</button>
+    
+    <ul id="shoppingList"></ul>
+    
+    <div class="counter">Összes tétel: <span id="itemCount">0</span></div>
+</div>
+
+<script>
+    function addItem() {
+        var itemInput = document.getElementById("itemInput").value;
+        
+        if (itemInput === "") {
+            alert("Kérlek, írj be egy elemet a bevásárlólistához.");
+            return;
+        }
+
+        var li = document.createElement("li");
+        li.innerHTML = itemInput + ' <button onclick="removeItem(this)">Törlés</button>';
+        document.getElementById("shoppingList").appendChild(li);
+        document.getElementById("itemInput").value = "";  // Reset input field
+        
+        updateItemCount();
+    }
+
+    function removeItem(button) {
+        var li = button.parentElement;
+        li.remove();
+        updateItemCount();
+    }
+
+    function updateItemCount() {
+        var itemCount = document.getElementById("shoppingList").getElementsByTagName("li").length;
+        document.getElementById("itemCount").innerText = itemCount;
+    }
+</script>
+
+</body>
+</html>

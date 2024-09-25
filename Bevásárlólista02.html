@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bevásárlólista kategóriákkal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: 70%;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        select {
+            width: 28%;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .category {
+            margin-top: 20px;
+        }
+        .category h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li {
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        ul li button {
+            background-color: red;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        ul li button:hover {
+            background-color: darkred;
+        }
+        .counter {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Bevásárlólista</h1>
+    <input type="text" id="itemInput" placeholder="Adj hozzá egy elemet...">
+    <select id="categorySelect">
+        <option value="vegetables">Zöldségek</option>
+        <option value="fruits">Gyümölcsök</option>
+        <option value="drinks">Italok</option>
+    </select>
+    <button onclick="addItem()">Hozzáadás</button>
+    
+    <div class="category">
+        <h2>Zöldségek</h2>
+        <ul id="vegetablesList"></ul>
+        <div class="counter">Összes zöldség: <span id="vegetablesCount">0</span></div>
+    </div>
+
+    <div class="category">
+        <h2>Gyümölcsök</h2>
+        <ul id="fruitsList"></ul>
+        <div class="counter">Összes gyümölcs: <span id="fruitsCount">0</span></div>
+    </div>
+
+    <div class="category">
+        <h2>Italok</h2>
+        <ul id="drinksList"></ul>
+        <div class="counter">Összes ital: <span id="drinksCount">0</span></div>
+    </div>
+</div>
+
+<script>
+    // Tömbök a kategóriákhoz
+    let vegetables = [];
+    let fruits = [];
+    let drinks = [];
+
+    // Hozzáadás a bevásárlólistához
+    function addItem() {
+        let itemInput = document.getElementById("itemInput").value.trim();
+        let category = document.getElementById("categorySelect").value;
+        
+        if (itemInput === "") {
+            alert("Kérlek, írj be egy elemet a bevásárlólistához.");
+            return;
+        }
+
+        // Hozzáadás a megfelelő kategória tömbhöz
+        if (category === "vegetables") {
+            vegetables.push(itemInput);
+        } else if (category === "fruits") {
+            fruits.push(itemInput);
+        } else if (category === "drinks") {
+            drinks.push(itemInput);
+        }
+
+        // Lista frissítése
+        updateList();
+        
+        // Szövegmező kiürítése
+        document.getElementById("itemInput").value = "";
+    }
+
+    // Elem eltávolítása a listából
+    function removeItem(category, index) {
+        if (category === "vegetables") {
+            vegetables.splice(index, 1);
+        } else if (category === "fruits") {
+            fruits.splice(index, 1);
+        } else if (category === "drinks") {
+            drinks.splice(index, 1);
+        }
+        updateList();
+    }
+
+    // Lista frissítése
+    function updateList() {
+        updateCategoryList("vegetables", vegetables, "vegetablesList", "vegetablesCount");
+        updateCategoryList("fruits", fruits, "fruitsList", "fruitsCount");
+        updateCategoryList("drinks", drinks, "drinksList", "drinksCount");
+    }
+
+    // Kategória lista frissítése
+    function updateCategoryList(category, items, listId, countId) {
+        let listElement = document.getElementById(listId);
+        listElement.innerHTML = "";  // Lista kiürítése
+
+        items.forEach((item, index) => {
+            let li = document.createElement("li");
+            li.innerHTML = item + ' <button onclick="removeItem(\'' + category + '\', ' + index + ')">Törlés</button>';
+            listElement.appendChild(li);
+        });
+
+        // Számláló frissítése
+        document.getElementById(countId).innerText = items.length;
+    }
+</script>
+
+</body>
+</html>
